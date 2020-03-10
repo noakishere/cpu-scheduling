@@ -113,8 +113,22 @@ $(document).ready(function(){
 		$("#cpu").val('');
 	});
 
-	$("#tog").click(function(){
+	$("#tog1").click(function(){
 		$("table").fadeIn();
-
 	});
+
+	$("#tog2").click(function(){
+		$("table").fadeIn();
+	});
+
+	$("#tog3").click(function(){
+		$("table").fadeIn();
+	});
+
+	$(".form-check-input").click(function(){
+		if(this.checked)
+			$("#quantum").prop('disabled', false);
+		else
+			$("#quantum").prop('disabled', true);
+	})
 });
