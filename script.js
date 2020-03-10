@@ -15,15 +15,50 @@ var result = [];
 
 //sort the objects by Arrival time
 //for FCFS algorithm
-function compare(a, b){
+function compareF(a, b){
 	return a.arrTime - b.arrTime;
 }
 
+function compareS(a, b){
+	return a.cpuCycle - b.cpuCycle;
+}
+
+function sjn(){
+
+	container.sort(compareS);
+
+	for(var i =0; i < container.length; i++)
+	{
+		var ft = container[i].arrTime + container[i].cpuCycle;
+		if(i == 0)
+		{
+			result.push(new Output(container[i].arrTime, ft, ft - container[i].arrTime));
+		}
+
+		else
+		{
+			var ft2 = result[i - 1].finishTime + container[i].cpuCycle
+			result.push(new Output(result[i - 1].finishTime, 
+				result[i - 1].finishTime + container[i].cpuCycle, 
+				ft2 - container[i].arrTime));
+		}
+
+
+		$("tbody").append("<tr>" + "<td>" + container[i].processName +
+						 "</td>" +
+						 "<td>" + result[i].startTime+
+						 "</td>" +
+						 "<td>" + result[i].finishTime +
+						 "</td>"+
+						 "<td>" + result[i].taTime +
+						 "</td>" + "</tr>");
+	}
+}
 
 
 function fcfs(){
 
-	container.sort(compare);
+	container.sort(compareF);
 
 	for(var i =0; i < container.length; i++)
 	{
@@ -55,9 +90,7 @@ function fcfs(){
 }
 
 
-function sjn(){
-	alert("yo")
-}
+
 
 function roundRobin(){
 	alert("yo")
@@ -78,5 +111,10 @@ $(document).ready(function(){
 		$("#pn").val("");
 		$("#at").val('');
 		$("#cpu").val('');
+	});
+
+	$("#tog").click(function(){
+		$("table").fadeIn();
+
 	});
 });

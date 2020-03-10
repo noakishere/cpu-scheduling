@@ -17,14 +17,19 @@
 
 		.card{
 			margin: 0 auto;
-			margin-top: 12px;
+			margin-top: 25px;
 			float: none;
 			margin-bottom: 10px;
 			background: black;
 		}
+
+		.jumbotron{
+			background: #eee;
+		}
+
 	</style>
 
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="script.js"></script>
 </head>
@@ -32,6 +37,7 @@
 
 	<div class="container text-center">
 
+		<div class="jumbotron">
 		<h1>CPU Scheduling simulation</h1>
 <div class="card" style="width: 25rem;">
   <ul class="list-group list-group-flush">
@@ -54,13 +60,14 @@
 		<label>Please Select one of the following algorithms</label>
 		<div class="row d-flex justify-content-center">
 
-		<button type="button" class="btn btn-primary" onclick="fcfs();">FCFS</button>
-		<button type="button" class="btn btn-secondary" onclick="sjn();">SJN</button>
-		<button type="button" class="btn btn-success" onclick="roundRobin();">Round Robin</button>
+		<button id="tog" type="button" class="btn btn-primary" onclick="fcfs();">FCFS</button>
+		<button id="tog"  type="button" class="btn btn-secondary" onclick="sjn();">SJN</button>
+		<button id="tog"  type="button" class="btn btn-success" onclick="roundRobin();">Round Robin</button>
+		</div>
 		</div>
 	</div>
 <br>
-	<table class="table table-striped table-dark justify-content-center" style="margin: auto; width: 45%;">
+	<table class="table table-striped table-dark" style="margin: auto; width: 45%; display: none;">
   <thead>
     <tr>
     <th scope="col">Process name</th>
