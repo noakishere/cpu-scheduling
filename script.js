@@ -14,6 +14,8 @@ function Input(processName, arrTime, cpuCycle) {
 	this.arrTime= parseInt(arrTime); 
 	this.cpuCycle= parseInt(cpuCycle);
 	this.ta = 0;
+	this.ft = 0;
+	this.st = 0;
 }
 
 //result output default object constructor
@@ -36,67 +38,6 @@ function compareF(a, b){
 //for SJN algorithm
 function compareS(a, b){
 	return a.cpuCycle - b.cpuCycle;
-}
-
-function roundRobin(){
-	var qt = parseInt($("#quantum").val()); //time quantum
-
-	container.sort(compareF);
-	var temp = container;
-
-	var done = false;
-
-	for(var i = 0; i < container.length; i++)
-	{
-		// while(temp.includes(temp[i].cpuCycle > qt))
-		// {
-		// 	temp[i].cpuCycle -= qt;
-		// 	temp[i].ta += qt;
-
-		// }
-
-
-		if(container[i].cpuCycle < qt && i == 0)
-			result.push(new Output(0, 
-				container[i].cpuCycle,
-				container[i].cpuCycle
-				 - container[i].arrTime + container[i].ta));
-
-		else if(container[i].cpuCycle < qt && i != 0)
-		{
-			result.push(new Output(result[i-1].finishTime, 
-				container[i].cpuCycle + result[i-1].finishTime,
-				container[i].cpuCycle + result[i-1].finishTime
-				 - container[i].arrTime + container[i].ta));
-			done = true;
-		}
-
-		else if(container[i].cpuCycle > qt)
-		{
-			container[i].cpuCylce -= qt;
-			container[i].ta += qt;
-			console.log(container[i].ta)
-			continue;
-		}
-
-		if((i == container.length - 1) && (done != true))
-		{
-			i = 0;
-			console.log("hola");
-		}
-	}
-
-	for(var j = 0; i < container.length; j++)
-	{
-		$("tbody").append("<tr>" + "<td>" + container[j].processName +
-						 "</td>" +
-						 "<td>" + result[j].startTime+
-						 "</td>" +
-						 "<td>" + result[j].finishTime +
-						 "</td>"+
-						 "<td>" + result[j].taTime +
-						 "</td>" + "</tr>");
-	}
 }
 
 function sjn(){
@@ -169,6 +110,66 @@ function fcfs(){
 						 "</td>" + "</tr>");
 	}
 	
+}
+
+function roundRobin(){
+	var qt = parseInt($("#quantum").val()); //time quantum
+
+	container.sort(compareF);
+	var temp = [];
+
+	var done = false;
+
+	while(temp.length != container.length)
+	{
+		for(var i =0; i < container.length; i++)
+		{
+			if((container[i].cpuCycle <= qt) && (i == 0) 
+				&& (!temp.includes(container[i])))
+			{
+				console.log("first")
+				container[i].st = container[i].arrTime;
+				container[i].ft += container[i].st + container[i].cpuCycle;
+				container[i].ta += container[i].ft - container[i].arrTime;
+				temp.push(container[i]);
+			}
+
+			else if((container[i].cpuCycle <= qt) 
+				&& (temp.length != 0)
+				&& (!temp.includes(container[i])))
+			{
+				container[i].st = temp[i - 1].ft;
+				container[i].ft += container[i].st + container[i].cpuCycle;
+				container[i].ta += container[i].ft - container[i].arrTime;
+				temp.push(container[i]);
+			}
+
+			else if(container[i].cpuCycle > qt)
+			{
+				container[i].cpuCycle -= qt;
+				container[i].ta += qt;
+				container[i].ft += qt;
+			}
+			
+		}
+	}
+
+	temp.sort(compareF);
+
+	console.log(temp)
+
+	for(var j = 0; j < container.length; j++)
+	{
+		console.log(temp[j])
+		$("tbody").append("<tr>" + "<td>" + container[j].processName +
+						 "</td>" +
+						 "<td>" + temp[j].st+
+						 "</td>" +
+						 "<td>" + temp[j].ft +
+						 "</td>"+
+						 "<td>" + temp[j].ta +
+						 "</td>" + "</tr>");
+	}
 }
 
 
